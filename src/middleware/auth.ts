@@ -1,7 +1,7 @@
 // src/middleware/authenticate.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model";
+import { UserBase } from "../models/user.model";
 
 // Middleware to verify JWT token
 export const authenticateToken = (
@@ -13,6 +13,7 @@ export const authenticateToken = (
 
   if (!token) {
     res.sendStatus(401); // Unauthorized if no token
+    return;
   } else {
     jwt.verify(token, process.env.JWT_SECRET!, (err: any, user: any) => {
       if (err) {
@@ -20,7 +21,7 @@ export const authenticateToken = (
       }
 
       // Attach user information to request object
-      req.user = user as User;
+      req.user = user as UserBase;
       return next(); // Call the next middleware or route handler
     });
   }
