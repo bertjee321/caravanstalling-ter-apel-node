@@ -1,29 +1,21 @@
-export interface User {
+export interface UserBase {
   id?: number;
   email?: string;
   password?: string; // This will be hashed
   role?: UserRole;
 }
 
-export interface AddUser extends User {
-  id: number;
+export interface AddUser extends UserBase {
   email: string;
   password: string; // This will be hashed
   role: UserRole;
 }
 
-export interface UpdateUser extends User {
+export interface UpdateUser extends UserBase {
   id: number; // ID is required for updating a vehicle
 }
 
-enum UserRole {
+export enum UserRole {
   ADMIN = "admin",
   USER = "user",
 }
-
-// export function createUser(email: string, password: string): User {
-//   const id = users.length + 1;
-//   const newUser = { id, email, password };
-//   users.push(newUser);
-//   return newUser;
-// }
