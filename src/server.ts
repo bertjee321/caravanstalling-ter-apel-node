@@ -1,11 +1,11 @@
-import bcrypt from "bcryptjs";
 import cors from "cors";
 import express from "express";
+import db from "./database/db";
 import { authenticateToken } from "./middleware/auth";
-import authRoutes from "./routes/auth";
 import customersRoutes from "./routes/customers";
 import invoicesRoutes from "./routes/invoices";
 import vehiclesRoutes from "./routes/vehicles";
+import authRoutes from "./routes/auth";
 
 const app = express();
 app.use(express.json());
@@ -18,14 +18,10 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes); 
 app.use("/api/customers", authenticateToken, customersRoutes);
 app.use("/api/vehicles", authenticateToken, vehiclesRoutes);
 app.use("/api/invoices", authenticateToken, invoicesRoutes);
-
-app.get("/api/protected", authenticateToken, (req, res) => {
-  res.send("This is a protected route");
-});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
