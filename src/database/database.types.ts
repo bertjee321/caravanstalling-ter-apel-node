@@ -115,30 +115,6 @@ export type Database = {
           },
         ]
       }
-      users: {
-        Row: {
-          created_at: string
-          email: string
-          hashed_password: string
-          id: number
-          role: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          hashed_password: string
-          id?: number
-          role: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          hashed_password?: string
-          id?: number
-          role?: string
-        }
-        Relationships: []
-      }
       vehicles: {
         Row: {
           created_at: string
