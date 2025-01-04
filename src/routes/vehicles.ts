@@ -1,12 +1,24 @@
-import express, { Request } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import pool from "../database/db";
-import { AddVehicle, UpdateVehicle } from "../models/vehicle.models";
+import { AddVehicle, UpdateVehicle } from "../models/vehicle.model";
 
 const router = express.Router();
 
-router.get("/getvehicles", async (req, res) => {
+router.get("/getvehicles", async (req: Request, res: Response) => {
   try {
     const result = await pool.from("vehicles").select("*");
+    res.json(result.data);
+  } catch (err: any) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.get("/getvehicle/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.from("vehicles").select("*").match({ id: +id });
     res.json(result.data);
   } catch (err: any) {
     console.error(err.message);
@@ -45,7 +57,7 @@ router.post(
           license_plate,
           type,
         })
-        .match({ id });
+        .eq("id", id);
       res.json(result);
     } catch (err: any) {
       console.error(err.message);
@@ -60,7 +72,7 @@ router.delete(
     const { id } = req.body;
 
     try {
-      const result = await pool.from("vehicles").delete().match({ id });
+      const result = await pool.from("vehicles").delete().eq("id", id);
       res.json(result);
     } catch (err: any) {
       console.error(err.message);
