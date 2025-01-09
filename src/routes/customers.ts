@@ -8,7 +8,11 @@ router.get(
   "/getcustomers",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await pool.from("customers").select("*");
+      const result = await pool.from("customers").select(`
+        *,
+        vehicles:vehicles(id, customer_id, garage, license_plate, type),
+        invoices:invoices(id, customer_id, vehicle_id, amount, invoice_date, due_date, paid)
+      `);
       res.json(result.data);
     } catch (err: any) {
       console.error(err.message);
@@ -33,12 +37,16 @@ router.post("/addcustomer", async (req: Request<{}, {}, AddCustomer>, res) => {
   const { email, first_name, last_name, phone_number } = req.body;
 
   try {
-    const result = await pool.from("customers").insert({
-      email,
-      first_name,
-      last_name,
-      phone_number,
-    });
+    const result = await pool
+      .from("customers")
+      .insert({
+        email,
+        first_name,
+        last_name,
+        phone_number,
+      })
+      .select("id")
+      .single();
     res.json(result);
   } catch (err: any) {
     console.error(err.message);
