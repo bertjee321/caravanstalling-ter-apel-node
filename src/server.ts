@@ -12,7 +12,7 @@ app.use(express.json());
 
 // Add CORS middleware
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://192.168.178.108:5173"], // Replace with your React app's URL
+  origin: ["http://localhost:5173", "https://bertjee321.github.io/caravanstalling-ter-apel-frontend/"], // Replace with your React app's URL
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // Allow cookies to be sent across origins
 };
